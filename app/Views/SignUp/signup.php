@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../../database/database.php';
 
 $dni = '';
@@ -11,6 +12,7 @@ $provincia = '';
 $departamento = '';
 $celEmergencia = '';
 $foto = '';
+$mensaje = '';
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -39,13 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($conexion) {
         $consulta = $conexion->query("INSERT INTO Usuarios (Dni,Nombre,Apellido,Celular,Direccion,Distrito,Provincia,Departamento,CelEmergencia,RutaFoto) VALUES('$dni','$nombres','$apellidos','$celular','$direccion','$distrito','$provincia','$departamento','$celEmergencia','$foto')");
         if ($consulta) {
-            echo '<script>alert("Registrado")</script>';
+            $_SESSION['usuario'] = $usuario;
+            header("Location: ./tips.php");
+            exit();
         } else {
-            echo '<script>alert("Error")</script>';
+            $mensaje = 'Error al registrar';
         }
     }
     $conexion->close();
-
 }
 
 
@@ -96,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
     </section>
-
+  
 </body>
 
 </html>

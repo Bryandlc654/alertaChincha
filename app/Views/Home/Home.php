@@ -87,8 +87,18 @@
                     ?>
                 </div>
             </div>
-            <!--             <script src="../../scripts/timer.js"></script>
- -->
+            <div class="modal" id="modalInfo">
+                <div class="modal-content">
+                    <a class="close-btn" onclick="closeModal()"><i class="bi bi-x"></i></a>
+                    <div>
+
+                    </div>
+                    <?php
+
+                    ?>
+                </div>
+            </div>
+            <script src="../../scripts/timer.js"></script> 
             <script>
                 iniciarCuentaAtras(240);
             </script>
