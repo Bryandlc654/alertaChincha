@@ -13,7 +13,6 @@
     <section class="p__section-home">
         <div class="login__container-register">
             <header class="home__header">
-
                 <?php
                 include '../../database/database.php';
 
@@ -21,23 +20,16 @@
                 if (isset($_SESSION['usuario'])) {
                     $usuario = $_SESSION['usuario'];
                     echo '<h2 class="home__title">Bienvenido, ' . $usuario['Nombre'] . '</h2>';
-                    echo '
-                    <label class="dropdown">
+                    echo '<label class="dropdown">
                     <div class="dd-button">
-                    <img src="'.$usuario['RutaFoto'].'" alt="" class="home__imgUser dropdown">
+                    <img src="' . $usuario['RutaFoto'] . '" alt="" class="home__imgUser">
                     </div>
                     <input type="checkbox" class="dd-input" id="test">
                     <ul class="dd-menu">
-                        <li>Action</li>
-                        <li>Another action</li>
-                        <li>Something else here</li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="http://rane.io">Link to Rane.io</a>
-                        </li>
+                        <li><a href="../Profile/profile.php">Actualizar Perfil</a></li>
+                        <li><a href="../Logout/logout.php">Cerrar Sesión</a></li>
                     </ul>
-                </label>
-                    ';
+                    </label>';
                 } else {
                     // Si la sesión no está iniciada, redirigir a la página de login
                     header("Location: ../../../index.php");

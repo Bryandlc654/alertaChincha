@@ -105,7 +105,6 @@
 
 .dropdown {
     display: inline-block;
-    position: relative;
 }
 
 .dd-button {
@@ -114,12 +113,6 @@
     white-space: nowrap;
 }
 
-
-.dd-button:hover {
-    background-color: #eeeeee;
-}
-
-
 .dd-input {
     display: none;
 }
@@ -127,7 +120,7 @@
 .dd-menu {
     position: absolute;
     top: 100%;
-    left: 2rem;
+    right: 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 0;
@@ -149,6 +142,7 @@
     padding: 10px 20px;
     cursor: pointer;
     white-space: nowrap;
+    font-size: 14px;
 }
 
 .dd-menu li:hover {
@@ -159,6 +153,8 @@
     display: block;
     margin: -10px -20px;
     padding: 10px 20px;
+    text-decoration: none;
+    color: #000;
 }
 
 .dd-menu li.divider {

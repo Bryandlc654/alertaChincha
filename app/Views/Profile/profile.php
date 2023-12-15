@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section class="p__section-register ">
         <div class="login__container-register">
             <header class="login__header">
-                <a href="../../../index.php" class="login__back"><i class="bi bi-chevron-left"></i></a>
+                <a href="../Home/home.php" class="login__back"><i class="bi bi-chevron-left"></i></a>
                 <h1 class="login__title">Actualizar Perfil</h1>
             </header>
             <form action="" method="post" enctype="multipart/form-data">
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     value="<?php echo $usuario['CelEmergencia']; ?>">
                 <div class="login__input-file">
                     <label for="foto" class="login__labelFile">Foto</label>
-                    <input type="file" id="foto" name="foto" value="<?php echo $usuario['RutaFoto'];?>">
+                    <input type="file" id="foto" name="foto" value="<?php echo $usuario['RutaFoto']; ?>">
                 </div>
                 <button type="submit" class="login__button">Actualizar</button>
             </form>
