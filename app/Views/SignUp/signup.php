@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $consulta = $conexion->query("INSERT INTO Usuarios (Dni,Nombre,Apellido,Celular,Direccion,Distrito,Provincia,Departamento,CelEmergencia,RutaFoto) VALUES('$dni','$nombres','$apellidos','$celular','$direccion','$distrito','$provincia','$departamento','$celEmergencia','$foto')");
         if ($consulta) {
             $_SESSION['usuario'] = $usuario;
-            header("Location: ./tips.php");
+            header("Location: ../../../index.php");
             exit();
         } else {
             $mensaje = 'Error al registrar';

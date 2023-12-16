@@ -33,7 +33,7 @@ body {
 }
 
 .slide__container {
-    width: 26rem;
+    width: 20rem;
 }
 
 .slide__container h3 {
@@ -48,4 +48,10 @@ body {
     font-size: 13px;
     text-align: justify;
     color: #000;
+}
+
+@media screen and (min-width:768px) {
+    .slide__container {
+        width: 26rem;
+    }
 }
