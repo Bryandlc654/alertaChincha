@@ -26,26 +26,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $departamento = isset($_POST['departamento']) ? $_POST['departamento'] : '';
     $celEmergencia = isset($_POST['celEmergencia']) ? $_POST['celEmergencia'] : '';
 
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $foto_tmp = $_FILES['foto']['tmp_name'];
-        $foto_nombre = $_FILES['foto']['name'];
-        $ruta_destino = '../../../fotos/' . $foto_nombre;
+    $consultaExisteUsuario = $conexion->query("SELECT COUNT(*) as totalUsuarios FROM Usuarios WHERE Dni = '$dni'");
+    $datosExisteUsuario = $consultaExisteUsuario->fetch_assoc();
+    $totalUsuarios = $datosExisteUsuario['totalUsuarios'];
 
-        // Mover el archivo a la carpeta de destino
-        move_uploaded_file($foto_tmp, $ruta_destino);
+    if ($totalUsuarios > 0) {
+        echo "<script>alert('Error: El usuario con el DNI ingresado ya existe.')</script>";
+    } else {
+        // Resto de tu código para procesar la inserción
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $foto_tmp = $_FILES['foto']['tmp_name'];
+            $foto_nombre = $_FILES['foto']['name'];
+            $foto_extension = strtolower(pathinfo($foto_nombre, PATHINFO_EXTENSION));
 
-        // Guardar la ruta en la variable $foto para almacenarla en la base de datos
-        $foto = $ruta_destino;
-    }
+            // Array de extensiones permitidas
+            $extensiones_permitidas = ['jpg', 'jpeg', 'png'];
 
-    if ($conexion) {
-        $consulta = $conexion->query("INSERT INTO Usuarios (Dni,Nombre,Apellido,Celular,Direccion,Distrito,Provincia,Departamento,CelEmergencia,RutaFoto) VALUES('$dni','$nombres','$apellidos','$celular','$direccion','$distrito','$provincia','$departamento','$celEmergencia','$foto')");
-        if ($consulta) {
-            $_SESSION['usuario'] = $usuario;
-            header("Location: ../../../index.php");
-            exit();
+            // Verificar la extensión del archivo
+            if (in_array($foto_extension, $extensiones_permitidas)) {
+                $ruta_destino = '../../../fotos/' . $foto_nombre;
+
+                // Mover el archivo a la carpeta de destino
+                move_uploaded_file($foto_tmp, $ruta_destino);
+
+                // Guardar la ruta en la variable $foto para almacenarla en la base de datos
+                $foto = $ruta_destino;
+            } else {
+                $mensaje = 'Error: Solo se permiten archivos en formato jpg, jpeg o png.';
+                echo "<script>alert('$mensaje')</script>";
+            }
         } else {
-            $mensaje = 'Error al registrar';
+            $mensaje = 'Error: No se ha seleccionado ninguna imagen.';
+            echo "<script>alert('$mensaje')</script>";
+        }
+
+        if ($conexion && empty($mensaje)) {
+            $consulta = $conexion->query("INSERT INTO Usuarios (Dni,Nombre,Apellido,Celular,Direccion,Distrito,Provincia,Departamento,CelEmergencia,RutaFoto) VALUES('$dni','$nombres','$apellidos','$celular','$direccion','$distrito','$provincia','$departamento','$celEmergencia','$foto')");
+            if ($consulta) {
+                echo "<script>alert('Registrado con éxito')</script>";
+                $_SESSION['usuario'] = $usuario;
+                header("Location: ../../../index.php");
+                exit();
+            } else {
+                echo "<script>alert('Error al registrar.')</script>";
+            }
         }
     }
     $conexion->close();
@@ -99,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
     </section>
-  
+
 </body>
 
 </html>

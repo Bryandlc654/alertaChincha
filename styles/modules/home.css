@@ -92,9 +92,12 @@
     font-size: 1.5rem;
 }
 
-.modal__input {
-    display: none;
-}
+ .modal__input {
+    border: none;
+    background-color: #d6d6d6b5;
+    padding: 1rem 1rem;
+    border-radius: 5px;
+} 
 
 .modal__subtitle {
     text-align: center;

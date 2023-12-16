@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             } else {
                 $mensaje = 'Contraseña Incorrecta';
+                echo "<script>alert('$mensaje')</script>";
             }
         }
         $conexion->close();
@@ -53,17 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     title="Ingrese un DNI válido de 8 dígitos" class="login__input" required>
                 <input type="text" id="celular" name="celular" placeholder="Celular" pattern="[0-9]{9}"
                     title="Ingrese un Celular válido de 9 dígitos" class="login__input">
-                <span class="login__resetpassword"><a href="#" class="login__resetpassword-text">¿Olvidaste tu
-                        Contraseña?</a></span>
                 <button type="submit" class="login__button" onclick="toast()">Ingresar</button>
             </form>
             <hr class="login__separator">
             <a href="./app/Views/SignUp/signup.php" class="login__button-light">Regístrate</a>
         </div>
     </section>
-    <div id="snackbar">
-        <?php echo $mensaje ?>
-    </div>
 
     <div class="splash">
         <section class="splash__background">
@@ -73,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </section>
     </div>
     <script src="./app/scripts/splashScreen.js"></script>
-    <script src="./app/scripts/toast.js"></script>
 
 </body>
 
