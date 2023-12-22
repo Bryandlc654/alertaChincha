@@ -29,6 +29,7 @@
                         <li><a href="../Profile/profile.php">Actualizar Perfil</a></li>
                         <li><a href="../Dashboard/dashboard.php">Dashboard</a></li>
                         <li><a href="../Dashboard/statistics.php">Estadisticas</a></li>
+                        <li><a href="../Dashboard/crud.php">Gestión de Usuarios</a></li>
                         <hr/>
                         <li><a href="../Logout/logout.php">Cerrar Sesión</a></li>
                     </ul>
@@ -78,19 +79,32 @@
                         }
 
                         if ($conexion) {
-                            $consulta = $conexion->query("INSERT INTO Alertas (Fecha,IdUsuario,TipoAlerta) VALUES ('$fechaActualPeru','$user','$tipo') ");
+                            switch ($tipo) {
+                                case 'Robo':
+                                    $IdTipo = 1;
+                                    break;
+                                case 'Incendio':
+                                    $IdTipo = 2;
+                                    break;
+                                case 'Accidente':
+                                    $IdTipo = 3;
+                                    break;
+                                case 'Emergencia':
+                                    $IdTipo = 4;
+                            }
+                            $consulta = $conexion->query("INSERT INTO Alertas (Fecha,IdUsuario,IdTipoEmergencia) VALUES ('$fechaActualPeru','$user','$IdTipo') ");
                             header("Location: ../../../index.php");
                             $conexion->close();
                         }
                     }
                     ?>
                     <form method="post">
-                        <!-- <span>Alerta de
+                        <span>Alerta de
                             <?php echo $usuario['Nombre'] ?>
                         </span>
                         <input type="text" name="tipo" class="modal__input" id="btnSeleccionado" value="">
                         <input type="text" class="modal__input" id="fecha" value="">
-                        <input type="text" class="modal__input" id="horaActual" value=""> -->
+                        <input type="text" class="modal__input" id="horaActual" value="">
                         <span class="modal__subtitle">¿Estas seguro de enviar la alerta?</span>
                         <button type="submit" class="login__button">Confirmar</button>
                     </form>

@@ -67,21 +67,42 @@
         </div>
         <div class="mt-5 flex lg:ml-4 lg:mt-0 gap-3 container-filters">
             <form action="" method="post" class="flex gap-3">
-                <span>
-                    <select name="operaciones"
-                        class="input_filter inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                        <option value="Todos"> Todos</option>
-                        <option value="Robos"> Robos</option>
-                        <option value="Incendios"> Incendios</option>
-                        <option value="Accidentes"> Accidentes</option>
-                        <option value="Otras"> Otras Emergencias</option>
-                    </select>
-                </span>
 
+
+                <span class="sm:ml-3">
+                    <button type="submit" value="tusuarios" name="operaciones"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Todos los usuarios
+                    </button>
+                </span>
+                <span class="sm:ml-3">
+                    <button type="submit" value="Otras" name="operaciones"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Otras
+                    </button>
+                </span>
+                <span class="sm:ml-3">
+                    <button type="submit" value="Accidentes" name="operaciones"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Accidentes
+                    </button>
+                </span>
+                <span class="sm:ml-3">
+                    <button type="submit" value="Incendios" name="operaciones"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Incendios
+                    </button>
+                </span>
+                <span class="sm:ml-3">
+                    <button type="submit" value="Robos" name="operaciones"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Robos
+                    </button>
+                </span>
                 <span class="sm:ml-3">
                     <button type="submit" value="Todos" name="operaciones"
                         class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Filtrar
+                        Todos
                     </button>
                 </span>
             </form>
@@ -109,7 +130,9 @@
                     </button>
                 </span>
             </form>
-            <a href="../Home/Home.php" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"><i class="bi bi-house-door"></i></a>
+            <a href="../Home/Home.php"
+                class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"><i
+                    class="bi bi-house-door"></i></a>
         </div>
     </div>
 
@@ -131,8 +154,10 @@
 
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Todos') {
-                $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario`";
+                $consulta = "SELECT u.*, c.*, te.NombreEmergencia
+             FROM Usuarios AS u
+             JOIN Alertas AS c ON u.IdUsuario = c.IdUsuario
+             JOIN TipoEmergencia AS te ON c.IdTipoEmergencia = te.IdTipoEmergencia";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -148,8 +173,8 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
-                    <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
+                <p class="text-sm leading-6 text-gray-900">' . $fila['NombreEmergencia'] . '</p>
+                <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
                 ';
@@ -162,8 +187,8 @@
 
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Robos') {
-                $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and c.TipoAlerta ='Robo'";
+                $consulta = 'SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
+                c.`IdUsuario`=u.`IdUsuario` and c.IdTipoEmergencia ="1"';
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -179,7 +204,7 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900">Robos</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
@@ -193,7 +218,7 @@
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Incendios') {
                 $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and c.TipoAlerta ='Incendio'";
+                c.`IdUsuario`=u.`IdUsuario` and c.IdTipoEmergencia ='2'";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -209,7 +234,7 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900">Incendios</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
@@ -224,7 +249,7 @@
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Accidentes') {
                 $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and c.TipoAlerta ='Accidente'";
+                c.`IdUsuario`=u.`IdUsuario` and c.IdTipoEmergencia ='3'";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -240,7 +265,7 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900">Accidentes</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
@@ -255,7 +280,7 @@
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Otras') {
                 $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and c.TipoAlerta ='Emergencia'";
+                c.`IdUsuario`=u.`IdUsuario` and c.IdTipoEmergencia ='4'";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -271,7 +296,7 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900">Otras Emergencias</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
@@ -284,8 +309,12 @@
         }
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'Fecha') {
-                $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and c.Fecha like '$fecha%'";
+               
+
+                $consulta = "SELECT u.*, c.*, te.NombreEmergencia
+                FROM Usuarios AS u
+                JOIN Alertas AS c ON u.IdUsuario = c.IdUsuario and c.Fecha like '$fecha%'
+                JOIN TipoEmergencia AS te ON c.IdTipoEmergencia = te.IdTipoEmergencia";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -301,7 +330,7 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['NombreEmergencia'] . '</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
             </li>
@@ -314,8 +343,10 @@
         }
         if (isset($_POST['operaciones'])) {
             if ($_POST['operaciones'] == 'usuario') {
-                $consulta = "SELECT * FROM Usuarios  AS u, Alertas AS c WHERE 
-                c.`IdUsuario`=u.`IdUsuario` and u.Dni='$user'";
+                $consulta = "SELECT u.*, c.*, te.NombreEmergencia
+                FROM Usuarios AS u
+                JOIN Alertas AS c ON u.IdUsuario = c.IdUsuario  and u.Dni='$user'
+                JOIN TipoEmergencia AS te ON c.IdTipoEmergencia = te.IdTipoEmergencia";
                 if ($resultado = $conexion->query($consulta)) {
                     while ($fila = $resultado->fetch_assoc()) {
                         echo '
@@ -331,9 +362,35 @@
                     </div>
                 </div>
                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['TipoAlerta'] . '</p>
+                    <p class="text-sm leading-6 text-gray-900"> ' . $fila['NombreEmergencia'] . '</p>
                     <p class="mt-1 text-xs leading-5 text-gray-500">' . $fila['Fecha'] . '</p>
                 </div>
+            </li>
+                ';
+                    }
+                } else {
+                    echo "Si esta";
+                }
+            }
+        }
+        if (isset($_POST['operaciones'])) {
+            if ($_POST['operaciones'] == 'tusuarios') {
+                $consulta = "SELECT * FROM Usuarios";
+                if ($resultado = $conexion->query($consulta)) {
+                    while ($fila = $resultado->fetch_assoc()) {
+                        echo '
+                <li class="flex justify-between gap-x-6 py-5">
+                <div class="flex min-w-0 gap-x-4">
+                    <img class="h-12 w-12 flex-none rounded-full bg-gray-50"
+                        src="' . $fila['RutaFoto'] . '"
+                        alt="">
+                    <div class="min-w-0 flex-auto">
+                        <p class="text-sm font-semibold leading-6 text-gray-900">' . $fila['Nombre'] . ' ' . $fila['Apellido'] . '</p>
+                        <p class="mt-1 truncate text-xs leading-5 text-gray-500">Dni: ' . $fila['Dni'] . '</p>
+                        <p class="mt-1 truncate text-xs leading-5 text-gray-500">Direccion: ' . $fila['Direccion'] . '</p>
+                    </div>
+                </div>
+               
             </li>
                 ';
                     }

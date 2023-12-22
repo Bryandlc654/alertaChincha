@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $celular = isset($_POST['celular']) ? $_POST['celular'] : '';
 
     if ($conexion) {
-        $consulta = $conexion->query("SELECT * FROM Usuarios WHERE Dni = '$dni' AND Celular = '$celular'");
+        $consulta = $conexion->query("SELECT * FROM Usuarios WHERE Dni = '$dni' AND Celular = '$celular' and Flag=1");
 
         if ($consulta->num_rows > 0) {
             $usuario = $consulta->fetch_assoc();
@@ -26,8 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ./app/Views/SignUp/signup.php");
                 exit();
             } else {
-                $mensaje = 'Contraseña Incorrecta';
-                echo "<script>alert('$mensaje')</script>";
+                $consulta = $conexion->query("SELECT * FROM Usuarios WHERE Dni = '$dni' AND Celular = '$celular' and Flag=0");
+                if ($consulta) {
+                    $mensaje = 'Usuario Deshabilitado';
+                    echo "<script>alert('$mensaje')</script>";
+                } else {
+                    $mensaje = 'Contraseña Incorrecta';
+                    echo "<script>alert('$mensaje')</script>";
+                }
             }
         }
         $conexion->close();
